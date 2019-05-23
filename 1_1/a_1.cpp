@@ -3,8 +3,8 @@
 // #include<string>
 using namespace std;
 
-#define  size  5 //1618
-#define size_of_each_string 3
+#define  size  1618 //1618
+#define size_of_each_string 100
 
 int matrix[size][size]={};
 string s_arr[size+1];
@@ -15,10 +15,10 @@ void input_strings(){
 	// string s[10];
 	for(int i=0;i<size;i++){
 		cin>>s_arr[i];
-	
+		//scanf("%s",s_arr[i]);
 		//cout<<s_arr[i]<<" ";
-		s_arr_reverse[i]=s_arr[i];
-		reverse(s_arr_reverse[i].begin(),s_arr_reverse[i].end());
+		// s_arr_reverse[i]=s_arr[i];
+		// reverse(s_arr_reverse[i].begin(),s_arr_reverse[i].end());
 		// reverse(name.begin(), name.end());
 		// cout<<s_arr_reverse[i];
 	}
@@ -64,14 +64,18 @@ int find_common(int n,int m,int start,int end){
 */
 
 int find_common(int n,int m,int start,int end){
-	int counter=0;
-	string str_a=s_arr[n];
-	string str_b=s_arr[m];
+	int count=0;
+	string a=s_arr[n];
+	string b=s_arr[m];
+	
+	while(a[count]==b[end-count])
+		count++;
+	return count;/*
 	for (int i=size_of_each_string;i>0;i--){
 		if(str_a.substr(start,i)==str_b.substr(end-i+1,i))
 			return i;
 	}
-	return 0;
+	return 0;*/
 
 }
 
@@ -112,15 +116,18 @@ string make_circular_genome(){
 }
 
 int main(){
+	clock_t time_req;
+	time_req = clock();
+	cout<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
 	input_strings();
+	cout<<"sss "<<((float)(clock()-time_req))/CLOCKS_PER_SEC<<endl;
+	// cout<<CLOCKS_PER_SEC;
 	make_matrix();
-	// for(int i=0;i<size;i++){
-	// 	for(int j=0;j<size;j++){
-	// 		cout<<matrix[i][j]<<" ";
-	// 	}
-	// 	cout<<endl;
-	// }
-	cout<<make_circular_genome();
+	cout<<"zzz "<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
+
+	make_circular_genome();
+	cout<<"eee "<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
+
 }
 
 
