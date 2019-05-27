@@ -3,25 +3,26 @@
 // #include<string>
 using namespace std;
 
-#define  size  1618 //1618
+#define  Size  1618 //1618
 #define size_of_each_string 100
 
-int matrix[size][size]={};
-string s_arr[size+1];
-string s_arr_reverse[size+1];
-bool seen[size]={};
+int matrix[Size][Size]={};
+string s_arr[Size+1];
+string s_arr_reverse[Size+1];
+bool seen[Size]={};
 
-void input_strings(){
-	// string s[10];
-	for(int i=0;i<size;i++){
-		cin>>s_arr[i];
-		//scanf("%s",s_arr[i]);
-		//cout<<s_arr[i]<<" ";
-		// s_arr_reverse[i]=s_arr[i];
-		// reverse(s_arr_reverse[i].begin(),s_arr_reverse[i].end());
-		// reverse(name.begin(), name.end());
-		// cout<<s_arr_reverse[i];
-	}
+void input_strings(int number){
+   ifstream infile; 
+
+	
+	string str =to_string(number);
+
+    string name="input/in"+str+".txt";
+    infile.open(name); 
+
+	for(int i=0;i<Size;i++)
+		infile>>s_arr[i];
+	infile.close();	
 }
 /*
 bool check(int n,int m,int start,int end ) { 
@@ -81,8 +82,8 @@ int find_common(int n,int m,int start,int end){
 
 void make_matrix(){
 	//matrix
-	for (int i=0;i<size;i++){
-		for(int j=0;j<size;j++){
+	for (int i=0;i<Size;i++){
+		for(int j=0;j<Size;j++){
 			if(i==j)
 				matrix[i][j]=-1;
 			else 
@@ -98,10 +99,10 @@ string make_circular_genome(){
 	seen[0]=true;
 	
 	int point=0;
-	for(int n=1;n<size;n++){
+	for(int n=1;n<Size;n++){
 		int maximum=-1;
 		int next=-1;
-		for(int i=0;i<size;i++){
+		for(int i=0;i<Size;i++){
 			if(matrix[point][i]>maximum && seen[i]==false){
 				next=i;
 				maximum=matrix[point][i];
@@ -116,17 +117,50 @@ string make_circular_genome(){
 }
 
 int main(){
-	clock_t time_req;
-	time_req = clock();
-	cout<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
-	input_strings();
-	cout<<"sss "<<((float)(clock()-time_req))/CLOCKS_PER_SEC<<endl;
-	// cout<<CLOCKS_PER_SEC;
-	make_matrix();
-	cout<<"zzz "<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
+	
+	for(int number=1;number<11;number++){
+		for(int x=0;x<Size;x++)
+			for(int z=0;z<Size;z++)
+				matrix[x][z]=0;
+		for(int z=0;z<Size+1;z++){
+			s_arr_reverse[z]="";
+			s_arr[z]="";
+		}
+		for(int z=0;z<Size+1;z++){
+			seen[z]=false;
+		}
 
-	make_circular_genome();
-	cout<<"eee "<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
+		clock_t time_req;
+		// time_req = clock();
+		//cout<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
+		
+		input_strings(number);
+		// cout<<"sss "<<((float)(clock()-time_req))/CLOCKS_PER_SEC<<endl;
+		// cout<<CLOCKS_PER_SEC;
+		make_matrix();
+		// cout<<"zzz "<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
+		string out=make_circular_genome();
+
+
+		cout<<number<<":"<<out.size()<<endl;
+
+
+
+		string str =to_string(number);
+
+		string name="output/out"+str+".txt";
+		
+		ofstream outfile;
+		outfile.open(name);
+
+		outfile << out;
+		outfile.close();
+
+
+
+		cout<<number<<":"<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl<<endl;
+	}
+	
 
 }
 
