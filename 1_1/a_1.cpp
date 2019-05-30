@@ -69,7 +69,7 @@ int find_common(int n,int m,int start,int end){
 	string a=s_arr[n];
 	string b=s_arr[m];
 	
-	while(a[count]==b[end-count])
+	while(a[count]==b[end-count] && count<size_of_each_string)
 		count++;
 	return count;/*
 	for (int i=size_of_each_string;i>0;i--){
@@ -77,7 +77,6 @@ int find_common(int n,int m,int start,int end){
 			return i;
 	}
 	return 0;*/
-
 }
 
 void make_matrix(){
@@ -109,7 +108,8 @@ string make_circular_genome(){
 			}
 		}
 		// cout<<maximum<<endl;
-		genome+=s_arr[next].substr(maximum,size_of_each_string-maximum);
+		if(maximum+1>=size_of_each_string)
+			genome+=s_arr[next].substr(maximum,size_of_each_string-maximum);
 		seen[next]=true;
 		point=next;
 	}
