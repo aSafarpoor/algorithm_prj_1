@@ -63,8 +63,8 @@ string make_circular_genome(){
 	bool is_error_used_in_last_iteration=false;
 	bool first_error=false;
 	bool next_error=false;
-	bool temp_error_will_use=flase;
-	bool error_will_use=flase;
+	bool temp_error_will_use=false;
+	bool error_will_use=false;
 
 	string genome="";
 	genome+=s_arr[0];
@@ -104,15 +104,24 @@ string make_circular_genome(){
 		}
 		else{
 			is_error_used_in_last_iteration=false;
-			first_error=false;
-			next_error=false;
+			// first_error=false;
+			// next_error=false;
 		}
+
 		is_error_used_in_last_iteration=error_will_use;
+		
 		if(error_will_use==false){
 			genome+=s_arr[next].substr(maximum,size_of_each_string-maximum);
 		}
-		else{
-			...
+		else{//means error will use :)
+			if(first_error){
+				// genome[genome.length() - 1];
+				genome[genome.length() - 1]=s_arr[next][0];
+				genome+=s_arr[next].substr(maximum+1,size_of_each_string-(maximum+1));
+			}
+			else{//it means if(next_error)
+				genome+=s_arr[next].substr(maximum+1,size_of_each_string-(maximum+1));		
+			}
 		}
 		// cout<<maximum<<endl;
 		seen[next]=true;
