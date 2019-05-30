@@ -17,7 +17,7 @@ void input_strings(int number){
 	
 	string str =to_string(number);
 
-    string name="input/in"+str+".txt";
+    string name="in"+str+".txt";
     infile.open(name); 
 
 	for(int i=0;i<Size;i++)
@@ -48,7 +48,9 @@ void make_matrix(){
 			if(i==j)
 				matrix[i][j]=-1;
 			else 
-				matrix[i][j]=find_common(j,i,0,size_of_each_string-1);		
+				matrix[i][j]=find_common(j,i,0,size_of_each_string-1);
+			cout<<matrix[i][j]<<" ";
+			if(j==Size-1)cout<<endl;		
 		}
 	}
 }
@@ -70,7 +72,7 @@ string make_circular_genome(){
 			}
 		}
 		// cout<<maximum<<endl;
-		if(maximum<size_of_each_string)
+		if(maximum<size_of_each_string)/**/
 			genome+=s_arr[next].substr(maximum,size_of_each_string-maximum);
 		seen[next]=true;
 		point=next;
@@ -104,13 +106,13 @@ int main(){
 		string out=make_circular_genome();
 
 
-		cout<<number<<":"<<out.size()<<endl;
+		// cout<<number<<":"<<out.size()<<endl;
 
 
 
 		string str =to_string(number);
 
-		string name="output/out"+str+".txt";
+		string name="out1.txt";
 		
 		ofstream outfile;
 		outfile.open(name);
@@ -120,7 +122,7 @@ int main(){
 
 
 
-		cout<<number<<":"<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl<<endl;
+		// cout<<number<<":"<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl<<endl;
 
 		cout<<endl<<out.size()<<endl;
 	}

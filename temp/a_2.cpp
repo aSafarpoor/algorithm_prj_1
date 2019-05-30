@@ -20,7 +20,7 @@ void input_strings(int number){
 	
 	string str =to_string(number);
 
-    string name="input/in"+str+".txt";
+    string name="in"+str+".txt";
     infile.open(name); 
 
 	for(int i=0;i<Size;i++)
@@ -145,25 +145,30 @@ string make_circular_genome(){
 		is_error_used_in_last_iteration=error_will_use;
 		
 		if(error_will_use==false){
+			cout<<"free: "<<s_arr[next]<<endl;
 			if(maximum<size_of_each_string)
-				genome+=s_arr[next].substr(maximum,size_of_each_string-maximum);
+			genome+=s_arr[next].substr(maximum,size_of_each_string-maximum);
 		}
 		else{//means error will use :)
+			cout<<"error: "<<s_arr[next]<<" "<<genome.size()<<endl;
 			if(first_error){
-				
-				for(int t=0;t<=maximum;t++){
+				// cout<<"eeeee "<<"max is "<<maximum<<" ";
+				cout<<endl<<"0: "<<genome.size();
+				for(int t=0;t<maximum;t++){
 					genome[genome.length() - maximum + t]=s_arr[next][t];
 				}
 				
 				/*
 				check if substr start in bad index :| ....it checked i guess but should to be test
 				*/
-				if(maximum<size_of_each_string)
-					genome+=s_arr[next].substr(maximum,size_of_each_string-(maximum));
+				cout<<endl<<"1: "<<genome.size();
+				if(maximum<size_of_each_string)/**/
+					genome+=s_arr[next].substr(maximum,size_of_each_string-(maximum));/**/
+				cout<<endl<<"2: "<<genome.size();
 			}
 			else{//it means if(next_error)
-				if(maximum<size_of_each_string)
-					genome+=s_arr[next].substr(maximum,size_of_each_string-(maximum));/**/			
+				if(maximum<size_of_each_string)/**/
+					genome+=s_arr[next].substr(maximum,size_of_each_string-(maximum));/**/		
 			}
 		}
 		// cout<<maximum<<endl;
@@ -202,13 +207,13 @@ int main(){
 		string out=make_circular_genome();
 
 
-		cout<<number<<":"<<out.size()<<endl;
+		// cout<<number<<":"<<out.size()<<endl;
 
 
 
 		string str =to_string(number);
 
-		string name="output/out"+str+".txt";
+		string name="out2.txt";//+str+".txt";
 		
 		ofstream outfile;
 		outfile.open(name);
@@ -218,7 +223,7 @@ int main(){
 
 
 
-		cout<<number<<":"<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl<<endl;
+		// cout<<number<<":"<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl<<endl;
 
 
 		cout<<endl<<out.size()<<endl;
