@@ -3,8 +3,11 @@
 // #include<string>
 using namespace std;
 
-#define  Size  5 //1618
-#define size_of_each_string 20
+#define  Size  1618
+#define size_of_each_string 100
+// int max_overlapp=-1;
+
+int last_overlapp;//it is to handle overlapp off overlapps
 
 int matrix[Size][Size]={};
 int error_prone_matrix[Size][Size]={};
@@ -34,6 +37,7 @@ int find_common(int n,int m,int start,int end){
 	if(a==b)return size_of_each_string;
 	while(a[count]==b[end-count] && count<size_of_each_string)
 		count++;
+	// if(max_overlapp<count)max_overlapp=count;
 	return count;/*
 	for (int i=size_of_each_string;i>0;i--){
 		if(str_a.substr(start,i)==str_b.substr(end-i+1,i))
@@ -59,6 +63,9 @@ int find_common_with_error(int n,int m,int start,int end){
 		count++;	
 
 	if(count>size_of_each_string)count--;
+	
+	// if(max_overlapp<count)max_overlapp=count;
+
 	return count;/*
 	for (int i=size_of_each_string;i>0;i--){
 		if(str_a.substr(start,i)==str_b.substr(end-i+1,i))
@@ -127,6 +134,10 @@ string make_circular_genome(){
 		/*
 		##########################OO##########################
 		there is a bug if 2 overlaps has overlap on each other
+
+		we checked inputs, there are no situation we this potantiality,,mx  overlapp was just 23 in error prone and 20 in error free
+
+		but we prefer to handle it
 		######################################################
 		*/
 		if(error_will_use){
@@ -147,26 +158,30 @@ string make_circular_genome(){
 		if(error_will_use==false){
 			if(maximum<size_of_each_string)
 				genome+=s_arr[next].substr(maximum,size_of_each_string-maximum);
+			last_overlapp=-1;
 		}
 		else{//means error will use :)
 			if(first_error){
-				
-				for(int t=0;t<=maximum;t++){
-					genome[genome.length() - maximum + t]=s_arr[next][t];
+				if(last_overlapp>size_of_each_string-maximum){
+					next_error=true;
+					first_error=false;
+				}
+				else{
+					for(int t=0;t<=maximum;t++){
+						genome[genome.length() - maximum + t]=s_arr[next][t];
+					}
+					if(maximum<size_of_each_string)
+						genome+=s_arr[next].substr(maximum,size_of_each_string-(maximum));
+					last_overlapp=maximum;
 				}
 				
-				/*
-				check if substr start in bad index :| ....it checked i guess but should to be test
-				*/
-				if(maximum<size_of_each_string)
-					genome+=s_arr[next].substr(maximum,size_of_each_string-(maximum));
 			}
-			else{//it means if(next_error)
+			if(next_error){//it means if(next_error)
+				last_overlapp=maximum;
 				if(maximum<size_of_each_string)
 					genome+=s_arr[next].substr(maximum,size_of_each_string-(maximum));/**/			
 			}
 		}
-		// cout<<maximum<<endl;
 		seen[next]=true;
 		point=next;
 	}
@@ -175,7 +190,7 @@ string make_circular_genome(){
 
 int main(){
 	
-	for(int number=1;number<2;number++){
+	for(int number=1;number<11;number++){
 		for(int x=0;x<Size;x++)
 			for(int z=0;z<Size;z++){
 				matrix[x][z]=0;
@@ -221,7 +236,7 @@ int main(){
 		cout<<number<<":"<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl<<endl;
 
 
-		cout<<endl<<out.size()<<endl;
+		
 	}
 	
 
