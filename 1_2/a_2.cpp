@@ -206,7 +206,7 @@ int main(){
 		}
 
 		clock_t time_req;
-		// time_req = clock();
+		time_req = clock();
 		//cout<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
 		
 		input_strings(number);
@@ -232,7 +232,7 @@ int main(){
 		outfile.close();
 
 
-
+		// cout<<(float)time_req<<endl;
 		cout<<number<<":"<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl<<endl;
 
 
