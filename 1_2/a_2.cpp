@@ -3,8 +3,8 @@
 // #include<string>
 using namespace std;
 
-#define  Size  1618
-#define size_of_each_string 100
+#define  Size  2//1618
+#define size_of_each_string 20//100
 // int max_overlapp=-1;
 
 int last_overlapp;//it is to handle overlapp off overlapps
@@ -47,16 +47,61 @@ int find_common(int n,int m,int start,int end){
 
 }
 int find_common_with_error(int n,int m,int start,int end){
+	/**/
 	int count=0;
 	string a=s_arr[n];
 	string b=s_arr[m];
-	
 	if(a==b)return size_of_each_string;
+	int j,z=0;
+	// for(int i=0;i<size_of_each_string;i++){
+	// 	if(a[i]==b[0]){
+	// 		j=0;
+	// 		while(j+i<size_of_each_string){
+	// 			if(a[i+j]==b[j]){j++;}
+	// 			else{
+	// 				break;
+	// 			}
+	// 		}
+	// 		if(i+j==size_of_each_string){
+	// 			z=j;break;
+	// 		}
+	// 	}
+	// }
+	// index_of_dif[n][m]=z;
+	int er=1;
+	int er_index=-1;
+	for(int i=0;i<size_of_each_string;i++){
+		if(a[i]==b[0]){
+			j=0;
+			er_index=-1;
+			while(j+i<size_of_each_string){
+				if(a[i+j]==b[j]){j++;}
+				else if(er>0){
+					er--;
+					er_index=j;
+				}
+				else{
+					break;
+				}
+			}
+			if(i+j==size_of_each_string){
+				index_of_dif[n][m]=er_index;
+				return j;
+			}
+		}
+	}
+	/**/
 
-	while(a[count]==b[end-count] && count<size_of_each_string)
-		count++;
+	// int count=0;
+	// string a=s_arr[n];
+	// string b=s_arr[m];
+	
+	// if(a==b)return size_of_each_string;
 
-	index_of_dif[n][m]=count+1;
+	// while(a[count]==b[end-count] && count<size_of_each_string)
+	// 	count++;
+
+	// index_of_dif[n][m]=count+1;
 
 	count+=1;
 	while(a[count]==b[end-count] && count<size_of_each_string)
@@ -190,7 +235,7 @@ string make_circular_genome(){
 
 int main(){
 	
-	for(int number=1;number<11;number++){
+	for(int number=0;number<1;number++){
 		for(int x=0;x<Size;x++)
 			for(int z=0;z<Size;z++){
 				matrix[x][z]=0;

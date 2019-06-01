@@ -3,8 +3,8 @@
 // #include<string>
 using namespace std;
 
-#define  Size  1618
-#define size_of_each_string 100
+#define  Size  1618//2//5//1618
+#define size_of_each_string 100//3//100
 // int max_overlapp=-1;
 int matrix[Size][Size]={};
 string s_arr[Size+1];
@@ -28,13 +28,39 @@ void input_strings(int number){
 
 int find_common(int n,int m,int start,int end){
 	int count=0;
-	string a=s_arr[n];
-	string b=s_arr[m];
+	string b=s_arr[n];
+	string a=s_arr[m];
 	
-	while(a[count]==b[end-count] && count<size_of_each_string)
+	for(int i=0;i<size_of_each_string;i++){
+		if(a[i]==b[0]){
+			int j=0;
+			while(j+i<size_of_each_string){
+				if(a[i+j]==b[j]){j++;}
+				else{
+					break;
+				}
+			}
+			if(i+j==size_of_each_string){
+				return j;
+			}
+		}
+	}
+
+	/*
+	for(int i=size_of_each_string;i>=0;i--){
+		string sub_a;
+		string sub_b;
+		sub_a=a.substr(end-i+1,i);
+		sub_b=b.substr(0,i);
+		if(sub_b==sub_a)
+			return i;
+	}*/
+	return 0;
+	/*while(a[count]==b[end-count] && count<size_of_each_string)
 		count++;
 	// if(count>max_overlapp)max_overlapp=count;
-	return count;/*
+	return count;*/
+	/*
 	for (int i=size_of_each_string;i>0;i--){
 		if(str_a.substr(start,i)==str_b.substr(end-i+1,i))
 			return i;
@@ -81,7 +107,7 @@ string make_circular_genome(){
 
 int main(){
 	
-	for(int number=1;number<11;number++){
+	for(int number=1;number<=10;number++){
 		for(int x=0;x<Size;x++)
 			for(int z=0;z<Size;z++)
 				matrix[x][z]=0;
@@ -94,7 +120,7 @@ int main(){
 		}
 
 		clock_t time_req;
-		// time_req = clock();
+		time_req = clock();
 		//cout<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
 		
 		input_strings(number);
