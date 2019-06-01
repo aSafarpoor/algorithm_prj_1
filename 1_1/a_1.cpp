@@ -3,7 +3,7 @@
 // #include<string>
 using namespace std;
 
-#define  Size  1618//2//5//1618
+#define  Size  1618//4//1618
 #define size_of_each_string 100//3//100
 // int max_overlapp=-1;
 int matrix[Size][Size]={};
@@ -131,8 +131,8 @@ int main(){
 		string out=make_circular_genome();
 
 
-		cout<<number<<":"<<out.size()<<endl;
-
+		cout<<number<<" size is:"<<out.size()<<endl;
+		// cout<<"out is:"<<out<<endl;
 
 
 		string str =to_string(number);
