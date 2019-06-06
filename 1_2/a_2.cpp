@@ -3,12 +3,11 @@
 // #include<string>
 using namespace std;
 
-#define  Size  2//1618//1618
-#define size_of_each_string 40//100//100
+#define  Size  1618//3//1618//1618
+#define size_of_each_string 100//40//100//100
 // int max_overlapp=-1;
 
 int last_overlapp;//it is to handle overlapp off overlapps
-
 int matrix[Size][Size]={};
 int error_prone_matrix[Size][Size]={};
 int index_of_dif[Size][Size]={};
@@ -30,28 +29,15 @@ void input_strings(int number){
 		infile>>s_arr[i];
 	infile.close();	
 }
-/*int find_common(int n,int m,int start,int end){
+
+int global_i_between_find_error_functions=-1;
+
+int find_common(int n,int m,int start,int end){
 	int count=0;
 	string a=s_arr[n];
 	string b=s_arr[m];
-	if(a==b)return size_of_each_string;
-	while(a[count]==b[end-count] && count<size_of_each_string)
-		count++;
-	// if(max_overlapp<count)max_overlapp=count;
-	//return count;
-	//for (int i=size_of_each_string;i>0;i--){
-	//	if(str_a.substr(start,i)==str_b.substr(end-i+1,i))
-	//		return i;
-	//}
-	return 0;
-
-}*/
-int find_common(int i,int n,int m,int start,int end){
-	int count=0;
-	string b=s_arr[n];
-	string a=s_arr[m];
 	
-	for(;i<size_of_each_string;i++){
+	for(int i=global_i_between_find_error_functions;i<size_of_each_string;i++){
 		if(a[i]==b[0]){
 			int j=0;
 			while(j+i<size_of_each_string){
@@ -61,7 +47,6 @@ int find_common(int i,int n,int m,int start,int end){
 				}
 			}
 			if(i+j==size_of_each_string){
-				// cout<<"m,n: "<<a<<" "<<b<<" common without error : "<<j<<endl;
 				return j;
 			}
 		}
@@ -80,40 +65,31 @@ int find_common_with_error(int n,int m,int start,int end){
 	int er_index=-1;
 	int i=0;
 	for(i=0;i<size_of_each_string;i++){
+		global_i_between_find_error_functions=i;
 		er=1;
-		if(a[i]==b[0]){
-			j=0;
-			er_index=-1;
-			while(j+i<size_of_each_string){
-				if(a[i+j]==b[j]){j++;}
-				else if(er>0){
-					er--;
-					er_index=j;
-					j++;
-				}
-				else{
-					break;
-				}
+	
+		j=0;
+		er_index=-1;
+		while(j+i<size_of_each_string){
+			if(a[i+j]==b[j]){
+				j++;
 			}
-			if(i+j==size_of_each_string){
-				index_of_dif[n][m]=er_index;
-				//so here we have i;
-				//we can use this i for findind without error part :)
-				//how????
-				
-				// matrix[m][n]=find_common(i,n,m,start,end);
-
-				
-				return j;
+			else if(er>0){
+				er--;
+				er_index=j;
+				j++;
+			}
+			else{
+				break;
 			}
 		}
+		if(i+j==size_of_each_string){
+			index_of_dif[n][m]=er_index;
+			return (j);
+		}
 	}
-	// cout<<"m,n: "<<a<<" "<<b<<" common with error : "<<0<<endl;
+	index_of_dif[n][m]=-1;
 	return 0;
-	/**/
-
-
-
 }
 
 void make_matrix(){
@@ -128,21 +104,55 @@ void make_matrix(){
 				matrix[i][j]=-1;
 			else {
 				
-				error_prone_matrix[i][j]=find_common_with_error(j,i,0,size_of_each_string-1);
-				matrix[i][j]=find_common(0,j,i,0,size_of_each_string-1); 
-				/*moved above line to find_common_with_error function*/
-				error_free_part=matrix[i][j];
-				// cout<<"\nlol"<<error_prone_matrix[i][j]<<" "<<error_free_part<<endl;
-				if(error_prone_matrix[i][j]>=error_free_part && matrix[i][j]<100){
-					// cout<<"ffffff"<<endl;
-					has_error[i][j]=true;
+				error_prone_matrix[j][i]=find_common_with_error(j,i,0,size_of_each_string-1);
+			
+				matrix[j][i]=find_common(j,i,0,size_of_each_string-1); 
+				error_free_part=matrix[j][i];
+			
+				if(error_prone_matrix[j][i]>error_free_part && matrix[j][i]<=size_of_each_string){
+					//is it necessary to be equal ???
+					// cout<<error_prone_matrix[j][i]<<" "<<size_of_each_string<<endl;
+					if(error_prone_matrix[j][i]>=(size_of_each_string*20/100))has_error[j][i]=true;//recall to change it//
+					//if(error_prone_matrix[j][i]>=1)has_error[j][i]=true;
 				}
-
-			}
-						
+			}				
 		}
 	}
+	// cout<<"without error:\n";
+	// for(int i=0;i<Size;i++){
+	// 	for(int j=0;j<Size;j++){
+	// 		cout<<" "<<matrix[i][j];
+	// 	}
+	// 	cout<<endl;
+	// }
+
+	// cout<<"with error:\n";
+	// for(int i=0;i<Size;i++){
+	// 	for(int j=0;j<Size;j++){
+	// 		cout<<" "<<error_prone_matrix[i][j];
+	// 	}
+	// 	cout<<endl;
+	// }
+	
+	// cout<<"index of error:\n";
+	// for(int i=0;i<Size;i++){
+	// 	for(int j=0;j<Size;j++){
+	// 		cout<<" "<<index_of_dif[i][j];
+	// 	}
+	// 	cout<<endl;
+	// }
+
+	// cout<<"has error:\n";
+	// for(int i=0;i<Size;i++){
+	// 	for(int j=0;j<Size;j++){
+	// 		cout<<" "<<has_error[i][j];
+	// 	}
+	// 	cout<<endl;
+	// }
+
+	// cout<<"-----------------------------------"<<endl;
 }
+//sotoon avalie va satr dovomie//
 
 string make_circular_genome(){
 	
@@ -160,29 +170,7 @@ string make_circular_genome(){
 	int point=0;
 	int temp_val=0;
 
-
-	for(int n=1;n<Size;n++){
-		int maximum=-1;
-		int next=-1;
-		int index_of_error;
-		error_will_use=false;
-		for(int i=0;i<Size;i++){
-			// cout<<"n is:"<<n<<" "<<i<<endl;
-			temp_val=matrix[point][i];
-			if(has_error[point][i]==true){
-				// cout<<"has error0"<<n<<" "<<i<<endl;
-				temp_val=error_prone_matrix[point][i];
-				temp_error_will_use=true;
-				index_of_error=index_of_dif[point][i];
-			}
-
-			if(temp_val>maximum && seen[i]==false){
-				error_will_use=temp_error_will_use;
-				next=i;
-				maximum=temp_val;
-			}
-		}
-		/*
+/*
 		##########################OO##########################
 		there is a bug if 2 overlaps has overlap on each other
 
@@ -191,10 +179,44 @@ string make_circular_genome(){
 
 		but we prefer to handle it
 		######################################################
-		*/
+*/
+	// cout<<"choose to have error or not\n";
+	// for(int i=0;i<Size;i++){
+	// 	for(int j=0;j<Size;j++){
+	// 		cout<<" "<<has_error[i][j];
+	// 	}
+	// 	cout<<endl;
+	// }
+	// cout<<"------------------------------------\n";
+	for(int n=1;n<Size;n++){
+		int maximum=-1;
+		int next=-1;
+		int index_of_error;
+		error_will_use=false;
+		for(int i=0;i<Size;i++){
+			if(seen[i]==false){
+				
+				if(has_error[point][i]){
+					temp_val=error_prone_matrix[point][i];
+					temp_error_will_use=true;
+					index_of_error=index_of_dif[point][i];
+				}
+				else{
+					temp_val=matrix[point][i];
+					temp_error_will_use=false;
+				}
+				
+				if(temp_val>maximum){
+					error_will_use=temp_error_will_use;
+					next=i;
+					maximum=temp_val;
+				}
+			}
+			
+		}
 		
 		if(error_will_use){
-			if(is_error_used_in_last_iteration){
+			if(next_error){
 				first_error=false;
 				next_error=true;
 			}
@@ -203,23 +225,24 @@ string make_circular_genome(){
 				next_error=false;	
 			}
 		}
+		else{
+			next_error=false;
+		}
+		// is_error_used_in_last_iteration=error_will_use;
 
-
-		is_error_used_in_last_iteration=error_will_use;
-		
 		if(error_will_use==false){
 			if(maximum<size_of_each_string)
 				genome+=s_arr[next].substr(maximum,size_of_each_string-maximum);
 			last_overlapp=-1;
 		}
 		else{
+			// cout<<endl<<first_error<<" ,  "<<maximum<<endl;
 			if(first_error){
 				if(last_overlapp>size_of_each_string-maximum){
 					next_error=true;
 					first_error=false;
 				}
-				else{
-						
+				else{		
 					last_overlapp=maximum;
 					if(maximum<size_of_each_string)
 						genome+=s_arr[next].substr(maximum,size_of_each_string-(maximum));/**/
@@ -243,7 +266,7 @@ string make_circular_genome(){
 
 int main(){
 	
-	for(int number=0;number<1;number++){
+	for(int number=1;number<11;number++){
 		for(int x=0;x<Size;x++)
 			for(int z=0;z<Size;z++){
 				matrix[x][z]=0;
@@ -264,7 +287,7 @@ int main(){
 		
 		input_strings(number);
 		// cout<<"sss "<<((float)(clock()-time_req))/CLOCKS_PER_SEC<<endl;
-		cout<<CLOCKS_PER_SEC;
+		// cout<<CLOCKS_PER_SEC;
 		make_matrix();
 		// cout<<"zzz "<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl;
 		string out=make_circular_genome();
