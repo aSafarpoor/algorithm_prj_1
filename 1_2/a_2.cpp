@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define  Size  1618//1618
+#define  Size  3//1618//1618
 #define size_of_each_string 100
 // int max_overlapp=-1;
 
@@ -66,7 +66,7 @@ int find_common_with_error(int n,int m,int start,int end){
 	int er_index=-1;
 	
 	for(int i=0;i<size_of_each_string;i++){
-		if(size_of_ezch_string-i-1<20){//5% :D
+		if(size_of_each_string-i-1<20){//5% :D
 			break;
 		}
 		global_i_between_find_error_functions=i;
@@ -121,7 +121,7 @@ void make_matrix(){
 				}
 				error_free_part=matrix[j][i];
 			
-				if(error_prone_matrix[j][i]>=20)//size_of_each_string*95/100){ 5% is 20 :D
+				if(error_prone_matrix[j][i]>=20){//size_of_each_string*95/100){ 5% is 20 :D
 					// cout<<error_prone_matrix[j][i]<<" "<<size_of_each_string<<endl;
 					has_error[j][i]=true;
 					
@@ -279,7 +279,7 @@ string make_circular_genome(){
 
 int main(){
 	
-	for(int number=1;number<11;number++){
+	for(int number=0;number<1;number++){
 		clock_t time_req;
 		time_req = clock();
 
