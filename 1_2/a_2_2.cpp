@@ -21,7 +21,7 @@ int main () {
     }
 }*/
 
-#define  number_of_reads  1618//3//1618//1618
+#define  number_of_reads  3//1618//1618
 #define size_of_each_string 100
 #define number_of_input_files 1
 
@@ -35,6 +35,7 @@ string s_arr_reverse[number_of_reads+1];
 bool seen[number_of_reads]={};
 bool last_node_used_its_error=false;
 
+int max_j=-1;
 
 void input_strings(int number){
    ifstream infile; 
@@ -49,22 +50,23 @@ void input_strings(int number){
 	infile.close();	
 }
 
-int max_j=-1;
+
+// int global_i=0;
 void fill_tree(int n,int m){
-    
+    int i=0;
     string a=s_arr[n];
     string b=s_arr[m];
 
     pair<int,int> p;
     int error_counter=2;
-  
-
-    for(int i=0;i<size_of_each_string;i++){
+    
+    //tree2
+    for(i=0;i<size_of_each_string;i++){
         
-        if(error_counter<0)break;
+        if(error_counter<0){break;}
         int j=0;
-        
-        while(error_counter>=0 && j+i<size_of_each_string){
+        // int seen_tree=0;
+        while(error_counter>=0 && ((j+i)<size_of_each_string)){
 
             if(a[i+j]==b[j]){
                 j+=1;
@@ -75,43 +77,95 @@ void fill_tree(int n,int m){
             } 
         }
 
-        if(j>=max_j){//} && error_counter>=0){
-            max_j=j;
-            
-            // cout<<j<<" "<<error_counter<<" "<<n<<"   "<<m<<"\n"<<a<<"\n"<<b<<endl;
-            cout<<n<<endl<<a<<"\n";//<<s_arr[n]<<endl;
-            cout<<m<<endl<<b<<"\n";//<<s_arr[m]<<endl;
-            cout<<max_j<<" "<<error_counter<<endl;
-    
-        }
+        
         if(i+j==size_of_each_string){
-            if(error_counter==2){
-                error_counter=-1;
-                p=make_pair(m,j);
-                tree0[i].push_back(p);
-                if(j>=10)tree1[i].push_back(p);
-                if(j>=20)tree2[i].push_back(p);
-                // p1=make_pair(3,9);
-            }
-            else if(error_counter==1){
-                error_counter=0;
-                p=make_pair(m,j);
-                if(j>=10)tree1[i].push_back(p);
-                if(j>=20)tree2[i].push_back(p);
-            }
-            else if(error_counter==0){
+            if(error_counter>=0){
                 error_counter=1;
                 p=make_pair(m,j);
-                if(j>=20)tree2[i].push_back(p);
+                i--;
+                tree2[n].push_back(p);
+                break;
             }
             else{
                 error_counter=2;
             }
         }
+        else{
+        	error_counter=2;
+        }
     }
+	//tree1
+	for(;i<size_of_each_string;i++){
+        
+        if(error_counter<0){break;}
+        int j=0;
+        // int seen_tree=0;
+        while(error_counter>=0 && ((j+i)<size_of_each_string)){
+
+            if(a[i+j]==b[j]){
+                j+=1;
+            }
+            else{
+                j+=1;
+                error_counter-=1;
+            } 
+        }
+
+        
+        if(i+j==size_of_each_string){
+            if(error_counter>=0){
+                error_counter=0;
+                p=make_pair(m,j);
+                i--;
+                tree1[n].push_back(p);
+                break;
+            }
+            else{
+                error_counter=1;
+            }
+        }
+        else{
+        	error_counter=1;
+        }
+    }
+    //tree0
+    for(;i<size_of_each_string;i++){
+        
+        if(error_counter<0){break;}
+        int j=0;
+        // int seen_tree=0;
+        while(error_counter>=0 && ((j+i)<size_of_each_string)){
+
+            if(a[i+j]==b[j]){
+                j+=1;
+            }
+            else{
+                j+=1;
+                error_counter-=1;
+            } 
+        }
+
+        
+        if(i+j==size_of_each_string){
+            if(error_counter>=0){
+                error_counter=0;
+                p=make_pair(m,j);
+                i--;
+                tree0[n].push_back(p);
+                break;
+            }
+            else{
+                error_counter=0;
+            }
+        }
+        else{
+        	error_counter=0;
+        }
+    }
+
+
 }
 void make_tree(){
-
     for (int n=0;n<number_of_reads;n++){
         for(int m=0;m<number_of_reads;m++){
             if(n==m)continue;
@@ -129,35 +183,33 @@ string make_circular_genome(){
 }
 int main(){
 	
-	for(int number=1;number<=10;number++){
+	for(int number=0;number<=0;number++){
         cout<<"-----------------------------------------"<<number<<"------------------------------------------"<<endl;
     	clock_t time_req;
 		time_req = clock();
 
 		input_strings(number);
         
-        // for(int i=0;i<2;i++){
-        //     cout<<s_arr[i]<<endl;
-        // }
+        
 		make_tree();
-
-
-		// string out=make_circular_genome();
-	
-
-
-		// string str =to_string(number);
-
-		// string name="output/Out_"+str+".txt";
+		cout<<"\n\n";
+		for(int i=0;i<number_of_reads;i++){
+			cout<<"000000000000\n";
+			for(int j=0;j<tree0[i].size();j++){
+				cout<<tree0[i][j].first<<" "<<tree0[i][j].second<<'\n';
+			}
+			cout<<"111111111111111\n";
+			for(int j=0;j<tree1[i].size();j++){
+				cout<<tree1[i][j].first<<" "<<tree1[i][j].second<<'\n';
+			}
+			cout<<"22222222222222\n";
+			for(int j=0;j<tree2[i].size();j++){
+				cout<<tree2[i][j].first<<" "<<tree2[i][j].second<<'\n';
+			}
+			cout<<"\n\n";
+		}
+		cout<<endl;
 		
-		// ofstream outfile;
-		// outfile.open(name);
-
-		// outfile << out;
-		// outfile.close();
-
-
-		// cout<<number<<":"<<(float)(clock()-time_req)/CLOCKS_PER_SEC<<endl<<endl;
 
 
 		
