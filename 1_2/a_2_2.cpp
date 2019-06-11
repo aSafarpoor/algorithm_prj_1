@@ -21,7 +21,7 @@ int main () {
     }
 }*/
 
-#define  number_of_reads  4//1618//1618
+#define  number_of_reads  3//1618//1618
 #define size_of_each_string 100
 #define number_of_input_files 1
 
@@ -183,9 +183,30 @@ string generate_genome(){
         ;;;;;;;;;;;;
     }
 }
+int find_longest_common(){
+	int m=0;
+	for(int i=0;i<number_of_reads;i++){
+		for(int j=0;j<tree0[i].size();j++){
+			if(tree0[i][j].second>m){
+				m=tree0[i][j].second;
+			}
+		}
+		for(int j=0;j<tree1[i].size();j++){
+			if(tree1[i][j].second>m){
+				m=tree1[i][j].second;
+			}
+		}
+		for(int j=0;j<tree2[i].size();j++){
+			if(tree2[i][j].second>m){
+				m=tree2[i][j].second;
+			}
+		}
+	}
+}
+
 int main(){
 	
-	for(int number=1;number<=10;number++){
+	for(int number=0;number<=0;number++){
         cout<<"-----------------------------------------"<<number<<"------------------------------------------"<<endl;
     	clock_t time_req;
 		time_req = clock();
@@ -199,29 +220,22 @@ int main(){
 
 
 
-		int m=0;
 		for(int i=0;i<number_of_reads;i++){
+			cout<<"--------------------------------";
 			for(int j=0;j<tree0[i].size();j++){
-				if(tree0[i][j].second>m){
-					m=tree0[i][j].second;
-				}
+				cout<<tree0[i][j].first<<" "<<tree0[i][j].second<<endl;
 			}
+			cout<<"\n";
 			for(int j=0;j<tree1[i].size();j++){
-				if(tree1[i][j].second>m){
-					m=tree1[i][j].second;
-				}
+				//if(tree1[i][j].second>m){
+				cout<<tree1[i][j].first<<" "<<tree1[i][j].second<<endl;
 			}
+			cout<<endl;
 			for(int j=0;j<tree2[i].size();j++){
-				if(tree2[i][j].second>m){
-					m=tree2[i][j].second;
-				}
+				cout<<tree2[i][j].first<<" "<<tree2[i][j].second<<endl;
 			}
+			cout<<endl;
 		}
-
-
-		cout<<tree0[1][5].first<<endl;
-		cout<<m;
-
 
 
 
