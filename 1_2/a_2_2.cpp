@@ -21,8 +21,8 @@ int main () {
     }
 }*/
 
-#define  number_of_reads  3//1618//1618
-#define size_of_each_string 100
+#define  number_of_reads  4//1618//1618
+#define size_of_each_string 10//100
 #define number_of_input_files 1
 
 vector< pair <int,int> >tree0[number_of_reads];
@@ -33,10 +33,9 @@ string s_arr[number_of_reads+1]={};
 string s_arr_reverse[number_of_reads+1];
 string genome="";
 bool seen[number_of_reads]={};
-bool used_error=false;
+bool error_used=false;
 bool last_node_used_its_error=false;
 
-int max_j=-1;
 
 void input_strings(int number){
    ifstream infile; 
@@ -174,15 +173,7 @@ void make_tree(){
     }
 }
 
-string generate_genome(){
-    int first=0;
-    return "ok";
 
-    for(int n=0;n<size_of_each_string;n++){
-        //we will use pure greedy algorithm
-        ;;;;;;;;;;;;
-    }
-}
 int find_longest_common(){
 	int m=0;
 	for(int i=0;i<number_of_reads;i++){
@@ -204,6 +195,136 @@ int find_longest_common(){
 	}
 }
 
+
+string generate_genome(){
+    int old=0;
+    int neww=-1;
+    // return "ok";
+    genome=s_arr[0];
+    seen[0]=true;
+    error_used=false;
+
+    for(int n=1;n<number_of_reads;n++){
+
+   	    int num_of_error=0;
+        int m=-1;
+        if(error_used==true){
+        	
+    		for(int i=0;i<tree1[old].size();i++){
+        		if(seen[tree1[old][i].first]==false && tree1[old][i].second>m){
+        			m=tree1[old][i].second;
+        			neww=tree1[old][i].first;
+        			num_of_error=1;
+        		}
+        	}
+        	
+        	for(int i=0;i<tree0[old].size();i++){
+        		if(seen[tree0[old][i].first]==false && tree0[old][i].second>=m){
+        			m=tree0[old][i].second;
+        			neww=tree0[old][i].first;
+        			num_of_error=0;
+        		}
+        	}
+        }
+        else{
+        	// find_with_legal_error();
+        	for(int i=0;i<tree2[old].size();i++){
+        		if(seen[tree2[old][i].first]==false && tree2[old][i].second>=m){
+        			m=tree2[old][i].second;
+        			neww=tree2[old][i].first;
+        			num_of_error=2;
+        		}
+        	}
+        	
+    		for(int i=0;i<tree1[old].size();i++){
+        		if(seen[tree1[old][i].first]==false && tree1[old][i].second>=m){
+        			m=tree1[old][i].second;
+        			neww=tree1[old][i].first;
+        			num_of_error=1;
+        		}
+        	}
+        	for(int i=0;i<tree0[old].size();i++){
+	        		if(seen[tree0[old][i].first]==false && tree0[old][i].second>=m){
+	        			m=tree0[old][i].second;
+	        			neww=tree0[old][i].first;
+						num_of_error=0;
+	        		}
+	        }
+        	
+        	
+        }
+        seen[neww]=true;
+        old=neww;
+        if(num_of_error==0){
+        	genome+=s_arr[neww].substr(m,size_of_each_string-m+1);
+        	error_used=false;
+
+        }
+        else if(num_of_error==1){
+        	if(error_used){
+        		error_used=true;
+        		genome+=s_arr[neww].substr(m,size_of_each_string-m+1);
+        	}
+        	else{
+        		error_used=false;
+        		for(int t=0;t<=m;t++){
+					genome[genome.length() - m + t]=s_arr[neww][t];
+				}
+				if(m<size_of_each_string)
+					genome+=s_arr[neww].substr(m,size_of_each_string-(m));
+        	}
+        }
+        else{
+        	error_used=true;
+        	bool flag=true;
+        	for(int t=0;t<=m;t++){
+        		if(genome[genome.length() - m + t]!=s_arr[neww][t]){
+        			if(flag){
+        				flag=false;
+        			}
+        			else{
+        				genome[genome.length() - m + t]=s_arr[neww][t];
+        			}
+        		}
+			}
+			if(m<size_of_each_string)
+				genome+=s_arr[neww].substr(m,size_of_each_string-(m));
+
+
+        }
+        cout<<"kkkkkkkkkkkkkkkkk     "<<old<<endl;
+        //add new to old genome'''''''''''''''''''
+    }
+    return genome;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 int main(){
 	
 	for(int number=0;number<=0;number++){
@@ -220,29 +341,11 @@ int main(){
 
 
 
-		for(int i=0;i<number_of_reads;i++){
-			cout<<"--------------------------------";
-			for(int j=0;j<tree0[i].size();j++){
-				cout<<tree0[i][j].first<<" "<<tree0[i][j].second<<endl;
-			}
-			cout<<"\n";
-			for(int j=0;j<tree1[i].size();j++){
-				//if(tree1[i][j].second>m){
-				cout<<tree1[i][j].first<<" "<<tree1[i][j].second<<endl;
-			}
-			cout<<endl;
-			for(int j=0;j<tree2[i].size();j++){
-				cout<<tree2[i][j].first<<" "<<tree2[i][j].second<<endl;
-			}
-			cout<<endl;
-		}
-
-
-
+		// 
 
 		generate_genome();
-
-		cout<<genome;
+		cout<<"\n"<<genome.size()<<"\n\n";
+		cout<<genome<<endl;
 		
 	}
 	
@@ -251,3 +354,24 @@ int main(){
 
 
 
+
+
+/*
+//print tree//
+		//for(int i=0;i<number_of_reads;i++){
+		// 	cout<<"--------------------------------";
+		// 	for(int j=0;j<tree0[i].size();j++){
+		// 		cout<<tree0[i][j].first<<" "<<tree0[i][j].second<<endl;
+		// 	}
+		// 	cout<<"\n";
+		// 	for(int j=0;j<tree1[i].size();j++){
+		// 		//if(tree1[i][j].second>m){
+		// 		cout<<tree1[i][j].first<<" "<<tree1[i][j].second<<endl;
+		// 	}
+		// 	cout<<endl;
+		// 	for(int j=0;j<tree2[i].size();j++){
+		// 		cout<<tree2[i][j].first<<" "<<tree2[i][j].second<<endl;
+		// 	}
+		// 	cout<<endl;
+		// }
+*/
