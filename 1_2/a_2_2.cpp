@@ -61,6 +61,7 @@ void fill_tree(int n,int m){
     int error_counter=2;
     
     //tree2
+    error_counter=2;
     for(i=0;i<size_of_each_string;i++){
         
         if(error_counter<0){break;}
@@ -95,7 +96,8 @@ void fill_tree(int n,int m){
         }
     }
 	//tree1
-	for(;i<size_of_each_string;i++){
+	error_counter=1;
+	for(i=0;i<size_of_each_string;i++){
         
         if(error_counter<0){break;}
         int j=0;
@@ -129,7 +131,8 @@ void fill_tree(int n,int m){
         }
     }
     //tree0
-    for(;i<size_of_each_string;i++){
+    error_counter=0;
+    for(i=0;i<size_of_each_string;i++){
         
         if(error_counter<0){break;}
         int j=0;
@@ -209,12 +212,13 @@ string generate_genome(){
    	    int num_of_error=0;
         int m=-1;
         if(error_used==true){
-        	
+        	cout<<"A";
     		for(int i=0;i<tree1[old].size();i++){
         		if(seen[tree1[old][i].first]==false && tree1[old][i].second>m){
         			m=tree1[old][i].second;
         			neww=tree1[old][i].first;
         			num_of_error=1;
+        			cout<<"a\n";
         		}
         	}
         	
@@ -223,16 +227,19 @@ string generate_genome(){
         			m=tree0[old][i].second;
         			neww=tree0[old][i].first;
         			num_of_error=0;
+        			cout<<"b\n";
         		}
         	}
         }
         else{
+        	cout<<"B";
         	// find_with_legal_error();
         	for(int i=0;i<tree2[old].size();i++){
         		if(seen[tree2[old][i].first]==false && tree2[old][i].second>=m){
         			m=tree2[old][i].second;
         			neww=tree2[old][i].first;
         			num_of_error=2;
+        			cout<<"a\n";
         		}
         	}
         	
@@ -241,6 +248,7 @@ string generate_genome(){
         			m=tree1[old][i].second;
         			neww=tree1[old][i].first;
         			num_of_error=1;
+        			cout<<"b\n";
         		}
         	}
         	for(int i=0;i<tree0[old].size();i++){
@@ -248,6 +256,7 @@ string generate_genome(){
 	        			m=tree0[old][i].second;
 	        			neww=tree0[old][i].first;
 						num_of_error=0;
+						cout<<"c\n";
 	        		}
 	        }
         	
@@ -338,9 +347,25 @@ int main(){
 		make_tree();
 		cout<<"tree created\n";
 
+		for(int i=0;i<number_of_reads;i++){
+			cout<<"--------------------------------\n";
+			cout<<s_arr[i]<<endl;
+			for(int j=0;j<tree0[i].size();j++){
+				cout<<tree0[i][j].first<<" "<<tree0[i][j].second<<endl;
+			}
+			cout<<"\n";
+			for(int j=0;j<tree1[i].size();j++){
+				//if(tree1[i][j].second>m){
+				cout<<tree1[i][j].first<<" "<<tree1[i][j].second<<endl;
+			}
+			cout<<endl;
+			for(int j=0;j<tree2[i].size();j++){
+				cout<<tree2[i][j].first<<" "<<tree2[i][j].second<<endl;
+			}
+			cout<<endl;
+		}
 
-
-
+		cout<<"\n\n";
 		// 
 
 		generate_genome();
