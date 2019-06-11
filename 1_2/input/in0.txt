@@ -1,21 +1,4 @@
 aaaaaaaaaa
-bbbbbbbbbb
+bbaaaaaaaa
 cccccccccc
-aaaaaaaaaa
-
-3
-2
-1
-
-
-bbbbbbbbbb
-
-
-aaaaaaaaaa
-aaaaaaaaaa
-	acccccccccbbbbbbbbb
-
-
-
-aaaaaaaaacccccccccbbbbbbbbb
-
+dddddddddd
