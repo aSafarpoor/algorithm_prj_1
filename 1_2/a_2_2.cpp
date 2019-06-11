@@ -21,7 +21,7 @@ int main () {
     }
 }*/
 
-#define  number_of_reads  3//1618//1618
+#define  number_of_reads  4//1618//1618
 #define size_of_each_string 100
 #define number_of_input_files 1
 
@@ -31,8 +31,9 @@ vector< pair <int,int> >tree2[number_of_reads];
 
 string s_arr[number_of_reads+1]={};
 string s_arr_reverse[number_of_reads+1];
-
+string genome="";
 bool seen[number_of_reads]={};
+bool used_error=false;
 bool last_node_used_its_error=false;
 
 int max_j=-1;
@@ -162,9 +163,8 @@ void fill_tree(int n,int m){
         	error_counter=0;
         }
     }
-
-
 }
+
 void make_tree(){
     for (int n=0;n<number_of_reads;n++){
         for(int m=0;m<number_of_reads;m++){
@@ -173,9 +173,11 @@ void make_tree(){
         }
     }
 }
-string make_circular_genome(){
+
+string generate_genome(){
     int first=0;
     return "ok";
+
     for(int n=0;n<size_of_each_string;n++){
         //we will use pure greedy algorithm
         ;;;;;;;;;;;;
@@ -183,7 +185,7 @@ string make_circular_genome(){
 }
 int main(){
 	
-	for(int number=0;number<=0;number++){
+	for(int number=1;number<=10;number++){
         cout<<"-----------------------------------------"<<number<<"------------------------------------------"<<endl;
     	clock_t time_req;
 		time_req = clock();
@@ -192,26 +194,41 @@ int main(){
         
         
 		make_tree();
-		cout<<"\n\n";
+		cout<<"tree created\n";
+
+
+
+
+		int m=0;
 		for(int i=0;i<number_of_reads;i++){
-			cout<<"000000000000\n";
 			for(int j=0;j<tree0[i].size();j++){
-				cout<<tree0[i][j].first<<" "<<tree0[i][j].second<<'\n';
+				if(tree0[i][j].second>m){
+					m=tree0[i][j].second;
+				}
 			}
-			cout<<"111111111111111\n";
 			for(int j=0;j<tree1[i].size();j++){
-				cout<<tree1[i][j].first<<" "<<tree1[i][j].second<<'\n';
+				if(tree1[i][j].second>m){
+					m=tree1[i][j].second;
+				}
 			}
-			cout<<"22222222222222\n";
 			for(int j=0;j<tree2[i].size();j++){
-				cout<<tree2[i][j].first<<" "<<tree2[i][j].second<<'\n';
+				if(tree2[i][j].second>m){
+					m=tree2[i][j].second;
+				}
 			}
-			cout<<"\n\n";
 		}
-		cout<<endl;
-		
 
 
+		cout<<tree0[1][5].first<<endl;
+		cout<<m;
+
+
+
+
+
+		generate_genome();
+
+		cout<<genome;
 		
 	}
 	
